@@ -92,7 +92,6 @@ cc.Class({
     },
 
     onMouseDown(event) {
-        console.log('mouse down');
         if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
             this.preShoot = true;
             this.drawLine(this.getEndPosition(event.getLocation()));
@@ -107,7 +106,6 @@ cc.Class({
     },
 
     onMouseUp(event) {
-        console.log('mouse up');
         if(!this.preShoot) {
             return;
         }
@@ -132,11 +130,19 @@ cc.Class({
      */
     onShoot(end) {
         let start = this.getStartPosition();
-        let direction = start.angle(end);
-        console.log('Shoot: ' + direction.toString());
+        let direction = cc.Vec2.RIGHT.angle(end.sub(start));
+        this.board.Shoot(start, direction, this.node);
     },
 
     onDestroy() {
         this.destroyLine();
-    }
+    },
+
+    onCollisionEnter(other, self) {
+        console.log('enter: ');
+    },
+
+    onCollisionExit(other, self) {
+        console.log('exit: ');
+    },
 });

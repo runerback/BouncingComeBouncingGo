@@ -25,6 +25,8 @@ cc.Class({
             default: null,
             type: cc.Label
         },
+        velocity: 0,
+        gravity: 0
     },
 
     onLoad() {
@@ -32,6 +34,14 @@ cc.Class({
 
         this.ballCount = 1;
         this.score = 0;
+
+        if(this.velocity == 0) {
+            this.velocity = 1;
+        }
+
+        if(this.gravity == 0) {
+            this.gravity = 1.025;
+        }
 
         let trackNode = this.track;
         let track = trackNode.getComponent('track');
@@ -42,9 +52,14 @@ cc.Class({
 
         this.collisionZone.getComponent('zone').board = board;
 
-        // let manager = cc.director.getCollisionManager();
-        // manager.enabled = true;
-        // manager.enabledDebugDraw = true;
+        board.game = this;
+
+        const managerP = cc.director.getPhysicsManager();
+        managerP.gravity = cc.v2(0, -this.gravity);
+        managerP.enabled = true;
+        
+        const managerC = cc.director.getCollisionManager();
+        managerC.enabled = true;
     },
 
     // gainScore() {
@@ -52,11 +67,11 @@ cc.Class({
     //     this.scoreDisplay.string = 'score: ' + this.score.toString();
     // },
 
-    // onCollisionEnter(other, self) {
-    //     console.log('enter: ' + other);
-    // },
+    onCollisionEnter(other, self) {
+        console.log('enter: ');
+    },
 
-    // onCollisionExit(other, self) {
-    //     console.log('exit: ' + other);
-    // }
+    onCollisionExit(other, self) {
+        console.log('exit: ');
+    },
 });
